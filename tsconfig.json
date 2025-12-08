@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "target": "es6",
+    "sourceMap": true,
+    "removeComments": false
+  },
+  "typeRoots": ["./node_modules/@types", "./config/types"],
+  "files": [
+    "./config/types/index.d.ts",
+    "src/ec.ts",
+  ]
+}

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 1rem;
+      font-size: 14px;
+    }
+    header {
+      text-align: center;
+    }
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 500px;
+      margin: 0 auto;
+    }
+    label {
+      margin-bottom:8px;
+      font-weight: bold;
+    }
+    label,
+    input {
+      display: block;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>EC Tracking</h1>
+    <div>
+      <strong>Available Demos:</strong>
+      <a href="/form-autofill.html">Autofill</a> | <a href="/marketo-blind-form.html">Marketo Blind Form</a> | <a href="/heap-autofill.html">Auto Heap Identify</a> | <a href="/marketo-form.html">Marketo Form</a> | <a href="/kiosk-mode.html">Kiosk Mode</a>
+    </div>
+    <div>
+      <strong>Tools:</strong> 
+      <a href="/autofill.html?utm_campaign=latest_test&utm_source=twitter&utm_medium=share&utm_content=awesome-content&utm_term=catchy+phrase&utm_device=desktop&msid=testing-msid&custom_param=latestcustom+cookie+value">Add Params</a> | <a href="/autofill.html">Remove Params</a></div>
+      <h2>Autofill: <span class="code bg-light-gray">$EC.autofill()</span></h2>
+  </header>
+
+  <section>
+    <form action="#" id="test-form">
+      <div>
+        <label for="ec_utm_campaign_first__c">utm_campaign_first</label>
+        <input type="text" class="ec_utm_campaign_first__c" name="ec_utm_campaign_first__c" id="ec_utm_campaign_first__c" />
+      </div>
+      <div>
+        <label for="ec_utm_campaign_last__c">utm_campaign_last</label>
+        <input type="text" class="ec_utm_campaign_last__c" name="ec_utm_campaign_last__c" id="ec_utm_campaign_last__c" />
+      </div>
+      <div>
+        <label for="ec_utm_source_first__c">utm_source_first</label>
+        <input type="text" class="ec_utm_source_first__c" name="ec_utm_source_first__c" id="ec_utm_source_first__c" />
+      </div>
+      <div>
+        <label for="ec_utm_source_last__c">utm_source_last</label>
+        <input type="text" class="ec_utm_source_last__c" name="ec_utm_source_last__c" id="ec_utm_source_last__c" />
+      </div>
+      <div>
+        <label for="ec_utm_medium_first__c">utm_medium_first</label>
+        <input type="text" class="ec_utm_medium_first__c" name="ec_utm_medium_first__c" id="ec_utm_medium_first__c" />
+      </div>
+      <div>
+        <label for="ec_utm_medium_last__c">utm_medium_last</label>
+        <input type="text" class="ec_utm_medium_last__c" name="ec_utm_medium_last__c" id="ec_utm_medium_last__c" />
+      </div>
+      <div>
+        <label for="ec_utm_content_first__c">utm_content_first</label>
+        <input type="text" class="ec_utm_content_first__c" name="ec_utm_content_first__c" id="ec_utm_content_first__c" />
+      </div>
+      <div>
+        <label for="ec_utm_content_last__c">utm_content_last</label>
+        <input type="text" class="ec_utm_content_last__c" name="ec_utm_content_last__c" id="ec_utm_content_last__c" />
+      </div>
+      <div>
+        <label for="ec_utm_term_first__c">utm_term_first</label>
+        <input type="text" class="ec_utm_term_first__c" name="ec_utm_term_first__c" id="ec_utm_term_first__c" />
+      </div>
+      <div>
+        <label for="ec_utm_term_last__c">utm_term_last</label>
+        <input type="text" class="ec_utm_term_last__c" name="ec_utm_term_last__c" id="ec_utm_term_last__c" />
+      </div>
+      <div>
+        <label for="ec_utm_device_first__c">utm_device_first</label>
+        <input type="text" class="ec_utm_device_first__c" name="ec_utm_device_first__c" id="ec_utm_device_first__c" />
+      </div>
+      <div>
+        <label for="ec_utm_device_last__c">utm_device_last</label>
+        <input type="text" class="ec_utm_device_last__c" name="ec_utm_device_last__c" id="ec_utm_device_last__c" />
+      </div>
+      <div>
+        <label for="ec_landing_page_first__c">landing_page_first</label>
+        <input type="text" class="ec_landing_page_first__c" name="ec_landing_page_first__c"
+          id="ec_landing_page_first__c" />
+      </div>
+      <div>
+        <label for="ec_landing_page_last__c">landing_page_last</label>
+        <input type="text" class="ec_landing_page_last__c" name="ec_landing_page_last__c" id="ec_landing_page_last__c" />
+      </div>
+      <div>
+        <label for="ec_referrer_first__c">referrer_first</label>
+        <input type="text" class="ec_referrer_first__c" name="ec_referrer_first__c" id="ec_referrer_first__c" />
+      </div>
+      <div>
+        <label for="ec_referrer_last__c">referrer_last</label>
+        <input type="text" class="ec_referrer_last__c" name="ec_referrer_last__c" id="ec_referrer_last__c" />
+      </div>
+      <div>
+        <label for="gclid__c">gclid</label>
+        <input type="text" class="gclid__c" name="gclid__c" id="gclid__c" />
+      </div>
+      <div>
+        <label for="ec_gclid_last__c">gclid_last</label>
+        <input type="text" class="ec_gclid_last__c" name="ec_gclid_last__c" id="ec_gclid_last__c" />
+      </div>
+      <div>
+        <label for="email">email</label>
+        <input type="email" name="email" id="email" class="email">
+      </div>
+      <div>
+        <label for="ec_heap_id__c">heap id</label>
+        <input type="text" class="ec_heap_id__c" name="ec_heap_id__c" id="ec_heap_id__c">
+      </div>
+      <input type="submit" value="Submit">
+    </form>
+  </section>
+
+  <!-- BEGIN: EC Demo Tracking -->
+  <script>
+    (function(){var a = document.createElement('script'); 
+    a.type="text/javascript";a.async=true;
+    a.src="/ec.min.js"; 
+    document.body.appendChild(a);})();
+  </script>
+  <!-- END: EC Demo Tracking -->
+
+  <script>
+    // Run functions here
+    window.addEventListener('load', function () {
+      // Optional, additional settings
+      $EC.setDomain("localhost");
+
+      $EC.debug = true;
+
+      const autofillLegacy = {
+        utm_campaign: {
+          first:"input[name=ec_utm_campaign_first__c]",
+          last:"input[name=ec_utm_campaign_last__c]"
+        },
+        utm_source: {
+          first:"input[name=ec_utm_source_first__c]",
+          last:"input[name=ec_utm_source_last__c]"
+        },
+        utm_medium: {
+          first:"input[name=ec_utm_medium_first__c]",
+          last:"input[name=ec_utm_medium_last__c]"
+        },
+        utm_content: {
+          first:"input[name=ec_utm_content_first__c]",
+          last:"input[name=ec_utm_content_last__c]"
+        },
+        utm_term: {
+          first:"input[name=ec_utm_term_first__c]",
+          last:"input[name=ec_utm_term_last__c]"
+        },
+        utm_device: {
+          first:"input[name=ec_utm_device_first__c]",
+          last:"input[name=ec_utm_device_last__c]"
+        },
+        lp: {
+          first:"input[name=ec_landing_page_first__c]",
+          last:"input[name=ec_landing_page_last__c]"
+        },
+        referrer: {
+          first:"input[name=ec_referrer_first__c]",
+          last:"input[name=ec_referrer_last__c]"
+        },
+        gclid: {
+          first:"input[name=gclid__c]",
+          last:"input[name=ec_gclid_last__c]",
+        }
+      };
+
+      const autofillNew = {
+        first_touch: {
+          utm_campaign: "input[name=ec_utm_campaign_first__c]",
+          utm_source: "input[name=ec_utm_source_first__c]",
+          utm_medium: "input[name=ec_utm_medium_first__c]",
+          utm_content: "input[name=ec_utm_content_first__c]",
+          utm_term: "input[name=ec_utm_term_first__c]",
+          utm_device: "input[name=ec_utm_device_first__c]",
+          lp: "input[name=ec_landing_page_first__c]",
+          referrer: "input[name=ec_referrer_first__c]",
+          gclid: "input[name=gclid__c]"
+        },
+        last_touch: {
+          utm_campaign: "input[name=ec_utm_campaign_last__c]",
+          utm_source: "input[name=ec_utm_source_last__c]",
+          utm_medium: "input[name=ec_utm_medium_last__c]",
+          utm_content: "input[name=ec_utm_content_last__c]",
+          utm_term: "input[name=ec_utm_term_last__c]",
+          utm_device: "input[name=ec_utm_device_last__c]",
+          lp: "input[name=ec_landing_page_last__c]",
+          referrer: "input[name=ec_referrer_last__c]",
+          gclid: "input[name=ec_gclid_last__c]"
+        }
+      };
+
+      // Autofill
+      $EC.autofill(autofillNew);
+
+      $EC.heap.autofill("input[name=email]", "input[name=ec_heap_id__c]");
+
+      // For Demo Only
+      document.getElementById("test-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+      });
+    });
+  </script>
+</body>
+</html>

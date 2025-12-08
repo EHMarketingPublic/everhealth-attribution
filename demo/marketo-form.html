@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 1rem;
+      font-size: 14px;
+    }
+    header {
+      text-align: center;
+    }
+    form {
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>EC Tracking</h1>
+    <div>
+      <strong>Available Demos:</strong>
+      <a href="/form-autofill.html">Autofill</a> | <a href="/marketo-blind-form.html">Marketo Blind Form</a> | <a href="/heap-autofill.html">Auto Heap Identify</a> | <a href="/marketo-form.html">Marketo Form</a> | <a href="/kiosk-mode.html">Kiosk Mode</a>
+    </div>
+    <div>
+      <strong>Tools:</strong> 
+      <a href="/marketo-form.html?utm_campaign=latest_test&utm_source=twitter&utm_medium=share&utm_content=awesome-content&utm_term=catchy+phrase&utm_device=desktop&msid=testing-msid&custom_param=latestcustom+cookie+value">Add Params</a> | <a href="/marketo-form.html">Remove Params</a></div>
+      <h2>Marketo Form</h2>
+  </header>
+
+  <section>
+    <script src="//go.evercommerce.com/js/forms2/js/forms2.min.js"></script>
+    <form id="mktoForm_1169"></form>
+    <script>MktoForms2.loadForm('//go.evercommerce.com', '047-GSD-207', 1169);</script>
+  </section>
+
+  <!-- BEGIN: EC Demo Tracking -->
+  <script>
+    (function(){var a = document.createElement('script'); 
+    a.type="text/javascript";a.async=true;
+    a.src="/ec.min.js"; 
+    document.body.appendChild(a);})();
+  </script>
+  <!-- END: EC Demo Tracking -->
+  
+  <script>
+    window.addEventListener('load', function() {
+      $EC.debug=true;
+    });
+  </script>
+
+</body>
+</html>

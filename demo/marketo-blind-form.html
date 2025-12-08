@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 1rem;
+      font-size: 14px;
+    }
+    header {
+      text-align: center;
+    }
+    form {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      width: 500px;
+      margin: 0 auto;
+    }
+    label {
+      margin-bottom:8px;
+      font-weight: bold;
+    }
+    label,
+    input:not([type=checkbox]),
+    select {
+      display: block;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>EC Tracking</h1>
+    <div>
+      <strong>Available Demos:</strong>
+      <a href="/form-autofill.html">Autofill</a> | <a href="/marketo-blind-form.html">Marketo Blind Form</a> | <a href="/heap-autofill.html">Auto Heap Identify</a> | <a href="/marketo-form.html">Marketo Form</a> | <a href="/kiosk-mode.html">Kiosk Mode</a>
+    </div>
+    <div>
+      <strong>Tools:</strong> 
+      <a href="/marketo-blind-form.html?utm_campaign=latest_test&utm_source=twitter&utm_medium=share&utm_content=awesome-content&utm_term=catchy+phrase&utm_device=desktop&msid=testing-msid&custom_param=latestcustom+cookie+value">Add Params</a> | <a href="/marketo-blind-form.html">Remove Params</a></div>
+      <h2>Marketo Blind Form: <span class="code bg-light-gray">$EC.mktoBlindForm()</span></h2>
+      <small><strong>Note:</strong> Does not support visibility fields.</small>
+  </header>
+
+  <section class="w-100 mw9 center">
+    <form action="#" id="test-form">
+      <div>
+        <label for="email">Email *</label>
+        <input type="email" name="email" id="email" required>
+      </div>
+      
+      <div>
+        <label for="first_name">First Name *</label>
+        <input type="text" name="first_name" id="first_name" required>
+      </div>
+      
+      <div>
+        <label for="last_name">Last Name *</label>
+        <input type="text" name="last_name" id="last_name" required>
+      </div>
+      
+      <div>
+        <label for="company">Company *</label>
+        <input type="text" name="company" id="company" required>
+      </div>
+
+      <div>
+        <label for="opt-in"><input type="checkbox" name="opt-in" id="opt-in"> Opt In</label>
+      </div>
+        
+      <input type="submit" value="Submit">
+    </form>
+
+  </section>
+
+  <!-- BEGIN: EC Demo Tracking -->
+  <script>
+    (function(){var a = document.createElement('script'); 
+    a.type="text/javascript";a.async=true;
+    a.src="/ec.min.js"; 
+    document.body.appendChild(a);})();
+  </script>
+  <!-- END: EC Demo Tracking -->
+
+  <!-- BEGIN: Mkto Blind Form -->
+  <script>
+    window.addEventListener('load', function() {
+      $EC.debug = true;
+
+      const config = {
+        mktoDomain: 'go.evercommerce.com',
+        munchkinId: '047-GSD-207',
+        mktoFormId: 1169,
+        formSelector: '#test-form',
+        bindFields: true,
+        bindSubmitEvent: true,
+        dataMap: {
+          // Field Selector: Mkto Field Name
+          'input[name=email]': 'Email',
+          'input[name=first_name]': 'FirstName',
+          'input[name=last_name]': 'LastName',
+          'input[name=company]': 'Company',
+          'input[name=opt-in]': 'Explicit_Opt_In__c'
+        }
+      };
+      // Load the blind form
+      $EC.mkto.blindForm.load(config);
+    });
+  </script>
+  <!-- END: Mkto Blind Form -->
+</body>
+</html>
