@@ -21,5 +21,8 @@
     "start": "webpack serve --mode development --config ./config/webpack.dev.ts",
     "build": "webpack --mode production --config ./config/webpack.prod.ts --no-cache && webpack --mode production --config ./config/webpack.latest.ts --no-cache",
     "linter": "npx eslint ./src/ec.ts -c ./config/.eslintrc.cjs"
+  },
+  "dependencies": {
+    "@babel/core": "^7.29.0"
   }
 }

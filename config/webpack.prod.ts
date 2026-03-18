@@ -3,20 +3,20 @@ import { Configuration as Configuration } from "webpack";
 const TerserPlugin = require("terser-webpack-plugin");
 
 // File Copyright Header
-const PACKAGE = require('../package.json');
+const PACKAGE = require("../package.json");
 const version = PACKAGE.version;
 const today = new Date();
-const dd = String(today.getDate()).padStart(2, '0');
-const mm = String(today.getMonth() + 1).padStart(2, '0');
+const dd = String(today.getDate()).padStart(2, "0");
+const mm = String(today.getMonth() + 1).padStart(2, "0");
 const yyyy = today.getFullYear();
-const date = mm + '/' + dd + '/' + yyyy;
+const date = mm + "/" + dd + "/" + yyyy;
 const header = `/**
- * Author: EverCommerce
- * Author URI: https://www.evercommerce.com/
+ * Author: EverHealth
+ * Author URI: https://www.everhealth.com/
  * Version: ${version}
  * Updated: ${date}
  * 
- * Copyright EverCommerce
+ * Copyright EverHealth
  * All Rights Reserved.
  * 
  * NOTICE: Unauthorized use or copying of this file
@@ -36,9 +36,9 @@ const config: Configuration = {
           mangle: true,
           output: {
             preamble: header,
-            comments: false
-          }
-        }
+            comments: false,
+          },
+        },
       }),
     ],
   },
@@ -50,7 +50,7 @@ const config: Configuration = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-typescript'],
+            presets: ["@babel/preset-env", "@babel/preset-typescript"],
           },
         },
       },
@@ -58,7 +58,7 @@ const config: Configuration = {
   },
   output: {
     path: path.resolve(__dirname, "../build/legacy-builds/v3"),
-    filename: `ec-${version}.min.js`
+    filename: `ec-${version}.min.js`,
   },
 };
 

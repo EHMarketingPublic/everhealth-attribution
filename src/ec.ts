@@ -2,15 +2,18 @@ export class EcAttribution {
   version: SemVer;
   domain: string;
   debug: boolean;
+  serverUrl: string | null;
 
-  constructor() {
+  constructor(serverUrl?: string) {
     this.version = "3.5.0";
-
+    this.serverUrl = serverUrl || null;
     if (!this.debug) this.debug = false;
 
     // Initiate tracking
     this.setDomain();
     this.handleAttributionCookie();
+    if (this.serverUrl) this.sendAttributionToServer();
+    this.observeNativeFormSubmits();
 
     window.addEventListener("load", () => {
       // Auto-handle Marketo Forms after load
@@ -451,6 +454,7 @@ export class EcAttribution {
       // Called when the form is submitted. Fired when the submission begins,
       // before the success/failure of the request is known.
       form.onSubmit(() => {
+        if (this.serverUrl) this.sendAttributionToServer();
         if (this.getFormType(form.getFormElem()[0]) === "kiosk") {
           // Kiosk mode enabled, clear associative values
           form.vals({
@@ -554,6 +558,7 @@ export class EcAttribution {
     window.addEventListener("message", (event) => {
       // Called after the form has been submitted and the submission has been persisted.
       if (event.data.type === "hsFormCallback" && event.data.eventName === "onFormSubmitted") {
+        if (this.serverUrl) this.sendAttributionToServer();
         // Add event to data layer
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
@@ -743,7 +748,29 @@ export class EcAttribution {
 
     return uuid;
   }
+
+  protected sendAttributionToServer() {
+    const payload = {
+      firstTouch: this.readCookie("__ecatft"),
+      lastTouch: this.readCookie("__ecatlt"),
+      pageUrl: window.location.href,
+    };
+    navigator.sendBeacon(this.serverUrl, JSON.stringify(payload));
+  }
+
+  protected observeNativeFormSubmits() {
+    document.addEventListener(
+      "submit",
+      () => {
+        if (this.serverUrl) this.sendAttributionToServer();
+      },
+      true,
+    );
+  }
 }
 
 // Make $EC available to window
-(window as any).$EC = new EcAttribution(); // eslint-disable-line  @typescript-eslint/no-explicit-any
+(window as any).ServerAttributionInit = function (serverUrl: string) {
+  (window as any).$EC = new EcAttribution(serverUrl);
+  return (window as any).$EC;
+};
