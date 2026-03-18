@@ -800,7 +800,12 @@ export class EcAttribution {
 }
 
 // Make $EC available to window
-(window as any).ServerAttributionInit = function (serverUrl: string) {
+// Auto-initialize if server URL is set on window by GTM
+(function () {
+  var serverUrl = (window as any).__ecServerUrl || null;
   (window as any).$EC = new EcAttribution(serverUrl);
-  return (window as any).$EC;
-};
+  (window as any).ServerAttributionInit = function (url: string) {
+    (window as any).$EC = new EcAttribution(url);
+    return (window as any).$EC;
+  };
+})();
