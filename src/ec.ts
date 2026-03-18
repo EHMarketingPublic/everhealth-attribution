@@ -752,41 +752,35 @@ export class EcAttribution {
   protected sendAttributionToServer() {
     const firstTouch = this.readCookie("__ecatft") as any;
     const lastTouch = this.readCookie("__ecatlt") as any;
-
     const clientId = this.getClientId();
 
-    const payload = {
-      client_id: clientId,
-      events: [
-        {
-          name: "attribution_capture",
-          params: {
-            first_utm_source: firstTouch.utm_source || "",
-            first_utm_campaign: firstTouch.utm_campaign || "",
-            first_utm_medium: firstTouch.utm_medium || "",
-            first_utm_content: firstTouch.utm_content || "",
-            first_utm_term: firstTouch.utm_term || "",
-            first_utm_device: firstTouch.utm_device || "",
-            first_lp: firstTouch.lp || "",
-            first_referrer: firstTouch.referrer || "",
-            first_gclid: firstTouch.gclid || "",
-            last_utm_source: lastTouch.utm_source || "",
-            last_utm_campaign: lastTouch.utm_campaign || "",
-            last_utm_medium: lastTouch.utm_medium || "",
-            last_utm_content: lastTouch.utm_content || "",
-            last_utm_term: lastTouch.utm_term || "",
-            last_utm_device: lastTouch.utm_device || "",
-            last_lp: lastTouch.lp || "",
-            last_referrer: lastTouch.referrer || "",
-            last_gclid: lastTouch.gclid || "",
-            page_url: window.location.href,
-            consent_granted: true,
-          },
-        },
-      ],
-    };
+    const params = new URLSearchParams({
+      v: "2",
+      tid: "G-99P6EVNB7E",
+      cid: clientId,
+      en: "attribution_capture",
+      "ep.first_utm_source": firstTouch.utm_source || "",
+      "ep.first_utm_campaign": firstTouch.utm_campaign || "",
+      "ep.first_utm_medium": firstTouch.utm_medium || "",
+      "ep.first_utm_content": firstTouch.utm_content || "",
+      "ep.first_utm_term": firstTouch.utm_term || "",
+      "ep.first_utm_device": firstTouch.utm_device || "",
+      "ep.first_lp": firstTouch.lp || "",
+      "ep.first_referrer": firstTouch.referrer || "",
+      "ep.first_gclid": firstTouch.gclid || "",
+      "ep.last_utm_source": lastTouch.utm_source || "",
+      "ep.last_utm_campaign": lastTouch.utm_campaign || "",
+      "ep.last_utm_medium": lastTouch.utm_medium || "",
+      "ep.last_utm_content": lastTouch.utm_content || "",
+      "ep.last_utm_term": lastTouch.utm_term || "",
+      "ep.last_utm_device": lastTouch.utm_device || "",
+      "ep.last_lp": lastTouch.lp || "",
+      "ep.last_referrer": lastTouch.referrer || "",
+      "ep.last_gclid": lastTouch.gclid || "",
+      "ep.page_url": window.location.href,
+    });
 
-    navigator.sendBeacon(this.serverUrl + "/g/collect?measurement_id=GTM-MLCTXDS", JSON.stringify(payload));
+    navigator.sendBeacon(this.serverUrl + "/g/collect?" + params.toString());
   }
 
   protected getClientId(): string {
