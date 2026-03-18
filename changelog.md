@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.5.0
+
+- Updating to work with new WP Consent plugin for handling new cookie compliance
+
 ## 3.4.4
 
 - Don't fire Marketo & Hubspot form handlers till after page load
@@ -22,7 +26,7 @@
   - onFormReady
   - onBeforeFormSubmit
   - onFormSubmitted
-- Fix: Automatically pre-populates HubSpot form attribution fields *onFormReady*
+- Fix: Automatically pre-populates HubSpot form attribution fields _onFormReady_
   - Only works for HubSpot forms which are configured to display as "Raw HTML"
 - Finalizes to Marketo Blind Form functionality, updates config options
 - Updates build process
