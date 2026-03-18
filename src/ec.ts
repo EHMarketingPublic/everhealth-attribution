@@ -750,12 +750,48 @@ export class EcAttribution {
   }
 
   protected sendAttributionToServer() {
+    const firstTouch = this.readCookie("__ecatft") as any;
+    const lastTouch = this.readCookie("__ecatlt") as any;
+
+    const clientId = this.getClientId();
+
     const payload = {
-      firstTouch: this.readCookie("__ecatft"),
-      lastTouch: this.readCookie("__ecatlt"),
-      pageUrl: window.location.href,
+      client_id: clientId,
+      events: [
+        {
+          name: "attribution_capture",
+          params: {
+            first_utm_source: firstTouch.utm_source || "",
+            first_utm_campaign: firstTouch.utm_campaign || "",
+            first_utm_medium: firstTouch.utm_medium || "",
+            first_utm_content: firstTouch.utm_content || "",
+            first_utm_term: firstTouch.utm_term || "",
+            first_utm_device: firstTouch.utm_device || "",
+            first_lp: firstTouch.lp || "",
+            first_referrer: firstTouch.referrer || "",
+            first_gclid: firstTouch.gclid || "",
+            last_utm_source: lastTouch.utm_source || "",
+            last_utm_campaign: lastTouch.utm_campaign || "",
+            last_utm_medium: lastTouch.utm_medium || "",
+            last_utm_content: lastTouch.utm_content || "",
+            last_utm_term: lastTouch.utm_term || "",
+            last_utm_device: lastTouch.utm_device || "",
+            last_lp: lastTouch.lp || "",
+            last_referrer: lastTouch.referrer || "",
+            last_gclid: lastTouch.gclid || "",
+            page_url: window.location.href,
+            consent_granted: true,
+          },
+        },
+      ],
     };
-    navigator.sendBeacon(this.serverUrl, JSON.stringify(payload));
+
+    navigator.sendBeacon(this.serverUrl + "/g/collect?measurement_id=GTM-MLCTXDS", JSON.stringify(payload));
+  }
+
+  protected getClientId(): string {
+    const match = document.cookie.match(/_ga=GA\d+\.\d+\.(\d+\.\d+)/);
+    return match ? match[1] : Math.random().toString(36).slice(2);
   }
 
   protected observeNativeFormSubmits() {
