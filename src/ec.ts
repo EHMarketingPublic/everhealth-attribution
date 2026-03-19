@@ -2,17 +2,15 @@ export class EcAttribution {
   version: SemVer;
   domain: string;
   debug: boolean;
-  serverUrl: string | null;
 
-  constructor(serverUrl?: string) {
-    this.version = "3.5.0";
-    this.serverUrl = serverUrl || null;
+  constructor() {
+    this.version = "3.7.0";
     if (!this.debug) this.debug = false;
 
     // Initiate tracking
     this.setDomain();
     this.handleAttributionCookie();
-    if (this.serverUrl) this.sendAttributionToServer();
+    this.sendAttributionToServer();
     this.observeNativeFormSubmits();
 
     window.addEventListener("load", () => {
@@ -454,7 +452,6 @@ export class EcAttribution {
       // Called when the form is submitted. Fired when the submission begins,
       // before the success/failure of the request is known.
       form.onSubmit(() => {
-        if (this.serverUrl) this.sendAttributionToServer();
         if (this.getFormType(form.getFormElem()[0]) === "kiosk") {
           // Kiosk mode enabled, clear associative values
           form.vals({
@@ -558,7 +555,6 @@ export class EcAttribution {
     window.addEventListener("message", (event) => {
       // Called after the form has been submitted and the submission has been persisted.
       if (event.data.type === "hsFormCallback" && event.data.eventName === "onFormSubmitted") {
-        if (this.serverUrl) this.sendAttributionToServer();
         // Add event to data layer
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
@@ -752,47 +748,36 @@ export class EcAttribution {
   protected sendAttributionToServer() {
     const firstTouch = this.readCookie("__ecatft") as any;
     const lastTouch = this.readCookie("__ecatlt") as any;
-    const clientId = this.getClientId();
 
-    const params = new URLSearchParams({
-      v: "2",
-      tid: "G-99P6EVNB7E",
-      cid: clientId,
-      en: "attribution_capture",
-      "ep.first_utm_source": firstTouch.utm_source || "",
-      "ep.first_utm_campaign": firstTouch.utm_campaign || "",
-      "ep.first_utm_medium": firstTouch.utm_medium || "",
-      "ep.first_utm_content": firstTouch.utm_content || "",
-      "ep.first_utm_term": firstTouch.utm_term || "",
-      "ep.first_utm_device": firstTouch.utm_device || "",
-      "ep.first_lp": firstTouch.lp || "",
-      "ep.first_referrer": firstTouch.referrer || "",
-      "ep.first_gclid": firstTouch.gclid || "",
-      "ep.last_utm_source": lastTouch.utm_source || "",
-      "ep.last_utm_campaign": lastTouch.utm_campaign || "",
-      "ep.last_utm_medium": lastTouch.utm_medium || "",
-      "ep.last_utm_content": lastTouch.utm_content || "",
-      "ep.last_utm_term": lastTouch.utm_term || "",
-      "ep.last_utm_device": lastTouch.utm_device || "",
-      "ep.last_lp": lastTouch.lp || "",
-      "ep.last_referrer": lastTouch.referrer || "",
-      "ep.last_gclid": lastTouch.gclid || "",
-      "ep.page_url": window.location.href,
+    // Push attribution params to dataLayer so they attach to all GA4 events
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      first_utm_source: firstTouch.utm_source || "",
+      first_utm_campaign: firstTouch.utm_campaign || "",
+      first_utm_medium: firstTouch.utm_medium || "",
+      first_utm_content: firstTouch.utm_content || "",
+      first_utm_term: firstTouch.utm_term || "",
+      first_utm_device: firstTouch.utm_device || "",
+      first_lp: firstTouch.lp || "",
+      first_referrer: firstTouch.referrer || "",
+      first_gclid: firstTouch.gclid || "",
+      last_utm_source: lastTouch.utm_source || "",
+      last_utm_campaign: lastTouch.utm_campaign || "",
+      last_utm_medium: lastTouch.utm_medium || "",
+      last_utm_content: lastTouch.utm_content || "",
+      last_utm_term: lastTouch.utm_term || "",
+      last_utm_device: lastTouch.utm_device || "",
+      last_lp: lastTouch.lp || "",
+      last_referrer: lastTouch.referrer || "",
+      last_gclid: lastTouch.gclid || "",
     });
-
-    navigator.sendBeacon(this.serverUrl + "/g/collect?" + params.toString());
-  }
-
-  protected getClientId(): string {
-    const match = document.cookie.match(/_ga=GA\d+\.\d+\.(\d+\.\d+)/);
-    return match ? match[1] : Math.random().toString(36).slice(2);
   }
 
   protected observeNativeFormSubmits() {
     document.addEventListener(
       "submit",
       () => {
-        if (this.serverUrl) this.sendAttributionToServer();
+        this.sendAttributionToServer();
       },
       true,
     );
@@ -802,10 +787,9 @@ export class EcAttribution {
 // Make $EC available to window
 // Auto-initialize if server URL is set on window by GTM
 (function () {
-  var serverUrl = (window as any).__ecServerUrl || null;
-  (window as any).$EC = new EcAttribution(serverUrl);
-  (window as any).ServerAttributionInit = function (url: string) {
-    (window as any).$EC = new EcAttribution(url);
+  (window as any).$EC = new EcAttribution();
+  (window as any).ServerAttributionInit = function () {
+    (window as any).$EC = new EcAttribution();
     return (window as any).$EC;
   };
 })();

@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.7.0
+
+- Changed script to persist attribution for all events by adding to data layer to send to server for filtering based on cookie consent
+
+## 3.6.0
+
+- Updating to work with server side tracking
+
 ## 3.5.0
 
 - Updating to work with new WP Consent plugin for handling new cookie compliance
