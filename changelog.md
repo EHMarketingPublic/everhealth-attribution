@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.0.0
+
+- Changed script to store via local/session storage vs cookies to bypass consent since that will be handled in sGTM before the attribution is sent on to clients such as GA4
+- Also added in a default, current attribution script that will supply URL attribution outside of form submits for better data tracking
+
 ## 3.7.0
 
 - Changed script to persist attribution for all events by adding to data layer to send to server for filtering based on cookie consent

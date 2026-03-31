@@ -1,8 +1,10 @@
 # EC Attribution
 
-_Last Updated: March 18, 2026_ | _Latest Version: 3.7.0_
+_Last Updated: March 31, 2026_ | _Latest Version: 4.0.0_
 
 EC Attribution v3+ captures UTM query string parameters as well GCLID, referrer, and landing page information. This solution utilizes two browser cookies to store the first and last touch datasets. This documentation serves as implementation instructions as well as a guide for using the Javascript API.
+
+The latest update removed the use of cookies for attribution storage and instead uses local/session storage. This bypasses the need for cookie consent since that will be handled within sGTM.
 
 ## Implementation Instructions
 
@@ -14,7 +16,7 @@ The following script is to be deployed via Google Tag Manager. The tag should be
     var a = document.createElement("script");
     a.type = "text/javascript";
     a.async = true;
-    a.src = "https://cdn.jsdelivr.net/gh/Evercommerce/ecmarketingpublic@main/ec-latest.min.js";
+    a.src = "https://cdn.jsdelivr.net/gh/EHMarketingPublic/everhealth-attribution@master/build/ec-latest.min.js";
     document.body.appendChild(a);
   })();
 </script>

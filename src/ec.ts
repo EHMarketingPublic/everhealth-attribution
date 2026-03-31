@@ -4,7 +4,7 @@ export class EcAttribution {
   debug: boolean;
 
   constructor() {
-    this.version = "3.7.0";
+    this.version = "4.0.0";
     if (!this.debug) this.debug = false;
 
     // Initiate tracking
@@ -387,11 +387,21 @@ export class EcAttribution {
     };
 
     if (Object.keys(firstTouchVals).length === 0) {
-      this.createCookie("__ecatft", cookieVal);
+      this.createStorage("__ecatft", cookieVal);
     }
 
-    if (Object.keys(lastTouchVals).length === 0) {
-      this.createCookie("__ecatlt", cookieVal);
+    this.createStorage("__ecatlt", cookieVal);
+  }
+
+  protected createStorage(name: string, value: object) {
+    if (!name || !value) return;
+
+    if (name === "__ecatft") {
+      // First touch - persist forever
+      localStorage.setItem(name, JSON.stringify(value));
+    } else {
+      // Last touch - session only
+      sessionStorage.setItem(name, JSON.stringify(value));
     }
   }
 
@@ -574,45 +584,21 @@ export class EcAttribution {
     });
   }
 
-  protected createCookie(name: string, value: CookieValue) {
-    if (!name) {
-      console.error("[$EC Error] Must provide a name.");
-      return;
-    }
-    if (!value) {
-      console.error("[$EC Error] Must provide a value.");
-      return;
-    }
-
-    const json = value ? JSON.stringify(value) : "";
-    let expires = "";
-
-    if (name == "__ecatft") {
-      const expiration = new Date();
-      expiration.setFullYear(expiration.getFullYear() + 10);
-      expires = " expires=" + expiration.toUTCString() + ";";
-    }
-
-    document.cookie = name + "=" + json + "; path=/" + "; domain=" + this.domain + ";" + expires;
-  }
-
   protected readCookie(name: string): object {
-    if (!name) {
-      console.error("[$EC Error] Must provide a name.");
-      return;
-    }
+    // Check localStorage/sessionStorage first, fall back to actual cookie
+    try {
+      const stored = name === "__ecatft" ? localStorage.getItem(name) : sessionStorage.getItem(name);
 
+      if (stored) return JSON.parse(stored);
+    } catch (e) {}
+
+    // Legacy cookie fallback
     const nameEQ = name + "=";
     const ca = document.cookie.split(";");
-
     for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == " ") {
-        c = c.substring(1, c.length);
-      }
-
-      if (c.indexOf(nameEQ) == 0) {
-        return JSON.parse(c.substring(nameEQ.length, c.length));
+      let c = ca[i].trim();
+      if (c.indexOf(nameEQ) === 0) {
+        return JSON.parse(c.substring(nameEQ.length));
       }
     }
 
@@ -746,30 +732,24 @@ export class EcAttribution {
   }
 
   protected sendAttributionToServer() {
-    const firstTouch = this.readCookie("__ecatft") as any;
-    const lastTouch = this.readCookie("__ecatlt") as any;
+    const parameters = new URLSearchParams(document.location.search);
 
     // Push attribution params to dataLayer so they attach to all GA4 events
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      first_utm_source: firstTouch.utm_source || "",
-      first_utm_campaign: firstTouch.utm_campaign || "",
-      first_utm_medium: firstTouch.utm_medium || "",
-      first_utm_content: firstTouch.utm_content || "",
-      first_utm_term: firstTouch.utm_term || "",
-      first_utm_device: firstTouch.utm_device || "",
-      first_lp: firstTouch.lp || "",
-      first_referrer: firstTouch.referrer || "",
-      first_gclid: firstTouch.gclid || "",
-      last_utm_source: lastTouch.utm_source || "",
-      last_utm_campaign: lastTouch.utm_campaign || "",
-      last_utm_medium: lastTouch.utm_medium || "",
-      last_utm_content: lastTouch.utm_content || "",
-      last_utm_term: lastTouch.utm_term || "",
-      last_utm_device: lastTouch.utm_device || "",
-      last_lp: lastTouch.lp || "",
-      last_referrer: lastTouch.referrer || "",
-      last_gclid: lastTouch.gclid || "",
+      ec_attribution: {
+        current: JSON.stringify({
+          utm_source: parameters.get("utm_source") || "",
+          utm_campaign: parameters.get("utm_campaign") || "",
+          utm_medium: parameters.get("utm_medium") || "",
+          utm_content: parameters.get("utm_content") || "",
+          utm_term: parameters.get("utm_term") || "",
+          utm_device: parameters.get("utm_device") || "",
+          gclid: parameters.get("gclid") || "",
+          lp: document.location.hostname + document.location.pathname || "",
+          referrer: document.referrer.split("?")[0] || "",
+        }),
+      },
     });
   }
 
