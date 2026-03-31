@@ -1,6 +1,6 @@
 {
   "name": "attribution-tracking",
-  "version": "3.6.0",
+  "version": "4.0.0",
   "author": "Matt Ondo <mondo@evercommerce.com> & Kendra Mulligan <kmulligan@evercommerce.com>",
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",
